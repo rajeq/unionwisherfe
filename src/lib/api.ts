@@ -137,3 +137,37 @@ export const uploadExcel = async (file: File) => {
 
   return res.data;
 };
+
+//
+// 🎨 Templates APIs (REQUIRED)
+//
+export interface Template {
+  id?: string;
+  _id?: string;
+  name: string;
+  type: "birthday" | "anniversary" | "festival";
+  url?: string;
+  active?: boolean;
+};
+
+export const fetchTemplates = async (): Promise<Template[]> => {
+  const res = await api.get("/api/templates");
+  return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+};
+
+export const uploadTemplate = async (
+  file: File,
+  type: string,
+  name: string
+) => {
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("type", type);
+  fd.append("name", name);
+
+  const res = await api.post("/api/template/upload", fd, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return res.data;
+};
