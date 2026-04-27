@@ -107,3 +107,33 @@ export const maskPhone = (phone?: string) => {
   if (s.length < 4) return s;
   return s.slice(0, 2) + "•".repeat(Math.max(0, s.length - 4)) + s.slice(-2);
 };
+
+//
+// 📂 Upload APIs (REQUIRED for upload page)
+//
+export const uploadJson = async (data: unknown) => {
+  const res = await api.post("/api/upload/json", data);
+  return res.data;
+};
+
+export const uploadCsv = async (file: File) => {
+  const fd = new FormData();
+  fd.append("file", file);
+
+  const res = await api.post("/api/upload/csv", fd, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return res.data;
+};
+
+export const uploadExcel = async (file: File) => {
+  const fd = new FormData();
+  fd.append("file", file);
+
+  const res = await api.post("/api/upload/excel", fd, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return res.data;
+};
